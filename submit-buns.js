@@ -1,9 +1,9 @@
 var SubmitBun = new Class({
-    initialize: function(input) {
-        this.input = input;
-		eval('this.options = ' + input.className.substr(SubmitBun.CLASS_TEXT.length));
-		this.form = this.input.getParent('form');
-    },
+  initialize: function(input) {
+    this.input = input;
+    eval('this.options = ' + input.className.substr(SubmitBun.CLASS_TEXT.length));
+    this.form = this.input.getParent('form');
+  },
 
 	replace: function() {
 		var hiddenInput = new Element('input', {
@@ -14,7 +14,6 @@ var SubmitBun = new Class({
 		
 		this.input = hiddenInput;
 		
-		this.input.setProperty('type', 'hidden');
 		this.link = new Element('a', {
 			'class': 'submit-bun-link',
 			'href': '#',
@@ -77,8 +76,6 @@ function loadSubmitm() {
 	});
 }
 
-window.addEvent('domready', function() {
-//	loadSubmitm();
+$(document).addEvent('domready', function() {
+	loadSubmitm();
 });
-
-loadSubmitm();
