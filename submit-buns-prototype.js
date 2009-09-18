@@ -5,12 +5,13 @@ var SubmitBun = Class.create({
     if(options)
       this.options = options;
     else
-      eval('this.options = ' + input.className.substr(SubmitBun.CLASS_TEXT.length));
+      this.options = {};
 
     this.form = this.input.up('form');
   },
 
   replace: function() {
+    var classes = this.input.className;
     var hiddenInput = new Element('input', {
       'type': 'hidden',
       'value': this.input.getValue(),
@@ -20,9 +21,10 @@ var SubmitBun = Class.create({
     this.input = hiddenInput;
 
     this.link = new Element('a', {
-      'class': 'submit-bun-link',
+      'class': 'submit-bun-link ' + classes,
       'href': '#'
     });
+    this.link.removeClassName('submit-bun');
 
     this.link.observe('click', this.submit.bindAsEventListener(this));
     this.link.observe('mouseover', this.over.bindAsEventListener(this));
@@ -35,15 +37,11 @@ var SubmitBun = Class.create({
     });
 
     this.input.insert({before: this.link});
-    this.link.insert(this.image);
+    this.link.update(hiddenInput.getValue());
+  },
 
-    var preload = new Element('img', {
-      'src': this.options.over,
-      'border': 0,
-      'width': 1,
-      'height': 1,
-      'style': 'display: none'
-    })
+  submit: function(event) {
+    event.stop();
 
     this.link.insert(preload);
   },
@@ -69,7 +67,7 @@ subms = [];
 
 function loadSubmitm() {
   $$('input').each(function(input) {
-    if(input.className.substr(0, SubmitBun.CLASS_TEXT.length) == SubmitBun.CLASS_TEXT) {
+    if(input.hasClassName(SubmitBun.CLASS_TEXT)) {
       subms.push(new SubmitBun(input));
     }
   });
