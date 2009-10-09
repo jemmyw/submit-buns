@@ -21,14 +21,12 @@ var SubmitBun = Class.create({
     this.input = hiddenInput;
 
     this.link = new Element('a', {
-      'class': 'submit-bun-link ' + classes,
       'href': '#'
     });
     this.link.removeClassName('submit-bun');
+    this.link.className = 'submit-bun-link ' + classes;
 
     this.link.observe('click', this.submit.bindAsEventListener(this));
-    this.link.observe('mouseover', this.over.bindAsEventListener(this));
-    this.link.observe('mouseout', this.out.bindAsEventListener(this));
 
     this.image = new Element('img', {
       'src': this.options.src,
@@ -46,18 +44,12 @@ var SubmitBun = Class.create({
     this.link.insert(preload);
   },
 	
-  submit: function() {
+  submit: function(event) {
+    event.stop();
+
     if(this.form.onsubmit)
       if(this.form.onsubmit() == false) return;
     this.form.submit();
-  },
-	
-  over: function() {
-    this.image.src = this.options.over;
-  },
-	
-  out: function() {
-    this.image.src = this.options.src;
   }
 });
 
